@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db.models import F, Count
 from rest_framework import viewsets, mixins
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 
 from .models import (
@@ -137,6 +138,11 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         return PerformanceSerializer
 
 
+class ReservationPagination(PageNumberPagination):
+    page_size = 10
+    max_page_size = 100
+
+
 class ReservationViewSet(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
@@ -146,6 +152,7 @@ class ReservationViewSet(
         "tickets__performance__play", "tickets__performance__theatre_hall"
     )
     serializer_class = ReservationSerializer
+    pagination_class = ReservationPagination
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
