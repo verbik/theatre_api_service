@@ -49,11 +49,10 @@ class PlayListSerializer(PlaySerializer):
 class PlayDetailSerializer(PlaySerializer):
     genres = GenreSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
-    
+
     class Meta:
         model = Play
         fields = ("id", "title", "description", "genres", "actors", "image")
-
 
 
 class PlayImageSerializer(serializers.ModelSerializer):
