@@ -59,9 +59,7 @@ class ActorViewSet(
 
 
 class TheatreHallViewSet(
-    mixins.CreateModelMixin,
-    mixins.ListModelMixin,
-    GenericViewSet
+    mixins.CreateModelMixin, mixins.ListModelMixin, GenericViewSet
 ):
     queryset = TheatreHall.objects.all()
     serializer_class = TheatreHallSerializer
@@ -117,10 +115,12 @@ class PlayViewSet(
 
         return PlaySerializer
 
-    @action(methods=["POST"],
-            detail=True,
-            url_path="upload-image",
-            permission_classes=[IsAdminUser])
+    @action(
+        methods=["POST"],
+        detail=True,
+        url_path="upload-image",
+        permission_classes=[IsAdminUser],
+    )
     def upload_image(self, request, pk=None):
         """Endpoint for uploading image to specific play"""
         play = self.get_object()
@@ -136,18 +136,18 @@ class PlayViewSet(
             OpenApiParameter(
                 "genres",
                 type={"type": "list", "items": {"type": "number"}},
-                description="Filter by genres id (ex. ?genres=1,2)"
+                description="Filter by genres id (ex. ?genres=1,2)",
             ),
             OpenApiParameter(
                 "actors",
                 type={"type": "list", "items": {"type": "number"}},
-                description="Filter by actors id (ex. ?actors=1,2)"
+                description="Filter by actors id (ex. ?actors=1,2)",
             ),
             OpenApiParameter(
                 "title",
                 type={"type": "str"},
-                description="Filter by title(ex. ?title=name)"
-            )
+                description="Filter by title(ex. ?title=name)",
+            ),
         ]
     )
     def list(self, request, *args, **kwargs):
@@ -160,8 +160,8 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         .select_related("play", "theatre_hall")
         .annotate(
             tickets_available=(
-                    F("theatre_hall__rows") * F("theatre_hall__seats_in_row")
-                    - Count("tickets")
+                F("theatre_hall__rows") * F("theatre_hall__seats_in_row")
+                - Count("tickets")
             )
         )
     )
@@ -199,12 +199,12 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             OpenApiParameter(
                 "date",
                 type={"type": "date"},
-                description="Filter by date (ex. ?date=2022-11-23)"
+                description="Filter by date (ex. ?date=2022-11-23)",
             ),
             OpenApiParameter(
                 "play",
                 type={"type": "number"},
-                description="Filter by play id (ex. ?play=1)"
+                description="Filter by play id (ex. ?play=1)",
             ),
         ]
     )

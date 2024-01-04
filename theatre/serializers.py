@@ -28,7 +28,13 @@ class GenreSerializer(serializers.ModelSerializer):
 class TheatreHallSerializer(serializers.ModelSerializer):
     class Meta:
         model = TheatreHall
-        fields = ("id", "name", "rows", "seats_in_row", "capacity",)
+        fields = (
+            "id",
+            "name",
+            "rows",
+            "seats_in_row",
+            "capacity",
+        )
 
 
 class PlaySerializer(serializers.ModelSerializer):
@@ -49,17 +55,19 @@ class PlayListSerializer(PlaySerializer):
 class PlayDetailSerializer(PlaySerializer):
     genres = GenreSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
-    
+
     class Meta:
         model = Play
         fields = ("id", "title", "description", "genres", "actors", "image")
 
 
 class PlayImageSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Play
-        fields = ("id", "image",)
+        fields = (
+            "id",
+            "image",
+        )
 
 
 class PerformanceSerializer(serializers.ModelSerializer):
@@ -70,8 +78,9 @@ class PerformanceSerializer(serializers.ModelSerializer):
 
 class PerformanceListSerializer(PerformanceSerializer):
     play_title = serializers.CharField(source="play.title", read_only=True)
-    theatre_hall_name = serializers.CharField(source="theatre_hall.name",
-                                              read_only=True)
+    theatre_hall_name = serializers.CharField(
+        source="theatre_hall.name", read_only=True
+    )
     theatre_hall_capacity = serializers.IntegerField(
         source="theatre_hall.capacity", read_only=True
     )
@@ -92,10 +101,12 @@ class PerformanceListSerializer(PerformanceSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         data = super(TicketSerializer, self).validate(attrs=attrs)
-        Ticket.validate_ticket(attrs["row"],
-                               attrs["seat"],
-                               attrs["performance"].theatre_hall,
-                               ValidationError)
+        Ticket.validate_ticket(
+            attrs["row"],
+            attrs["seat"],
+            attrs["performance"].theatre_hall,
+            ValidationError,
+        )
         return data
 
     class Meta:
