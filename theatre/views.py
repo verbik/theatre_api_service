@@ -151,7 +151,7 @@ class PlayViewSet(
         ]
     )
     def list(self, request, *args, **kwargs):
-        super().list(request, *args, **kwargs)
+        return super().list(request, *args, **kwargs)
 
 
 class PerformanceViewSet(viewsets.ModelViewSet):
@@ -209,7 +209,7 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         ]
     )
     def list(self, request, *args, **kwargs):
-        super().list(request, *args, **kwargs)
+        return super().list(request, *args, **kwargs)
 
 
 class ReservationPagination(PageNumberPagination):
