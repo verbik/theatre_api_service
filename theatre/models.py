@@ -31,7 +31,7 @@ def play_image_file_path(instance, filename):
 
     filename = f"{slugify(instance.title)}-{uuid.uuid4()}.{ext}"
 
-    return os.path.join("uploads/buses/", filename)
+    return os.path.join(os.path.join("uploads", "plays", filename))
 
 
 class Play(models.Model):
