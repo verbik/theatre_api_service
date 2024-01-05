@@ -26,7 +26,7 @@ class Genre(models.Model):
         return self.name
 
 
-def play_image_file_path(instance, filename):
+def play_image_file_path(instance, filename: str):
     _, ext = os.path.splitext(filename)
 
     filename = f"{slugify(instance.title)}-{uuid.uuid4()}{ext}"
@@ -93,7 +93,7 @@ class Ticket(models.Model):
     seat = models.IntegerField()
 
     @staticmethod
-    def validate_ticket(row, seat, theatre_hall, error_to_raise):
+    def validate_ticket(row: int, seat: int, theatre_hall: TheatreHall, error_to_raise):
         for ticket_attr_value, ticket_attr_name, theatre_hall_attr_name in [
             (row, "row", "rows"),
             (seat, "seat", "seats_in_row"),
